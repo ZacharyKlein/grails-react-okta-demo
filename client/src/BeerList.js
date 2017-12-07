@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-import logo from './images/logo.svg';
-import 'whatwg-fetch';
-import BeerList from "./BeerList";
+import * as React from 'react';
 
-class App extends Component {
-
+class BeerList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,6 +9,7 @@ class App extends Component {
       isLoading: false
     };
   }
+
   componentDidMount() {
     this.setState({isLoading: true});
 
@@ -22,16 +19,23 @@ class App extends Component {
   }
 
   render() {
+    const {beers, isLoading} = this.state;
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <h2>Welcome to React</h2>
-        </div>
-        <BeerList/>
+      <div>
+        <h2>Beer List</h2>
+        {beers.map((beer) =>
+          <div key={beer.id}>
+            {beer.name}
+          </div>
+        )}
       </div>
     );
   }
 }
 
-export default App;
+export default BeerList;
