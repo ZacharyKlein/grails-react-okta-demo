@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Security, ImplicitCallback } from '@okta/okta-react';
 
 const config = {
-  issuer: 'https://dev-699989.oktapreview.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   redirectUri: window.location.origin + '/implicit/callback',
-  clientId: '0oad6dof6gwJkiXHs0h7'
+  clientId: '{clientId}'
 };
 
 class App extends React.Component {
