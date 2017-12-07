@@ -33,6 +33,8 @@ dependencies {
     compile "org.grails:grails-core"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "com.okta.spring:okta-spring-boot-starter:0.2.0"
+    compile "org.springframework.security.oauth:spring-security-oauth2:2.2.0.RELEASE"
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails:grails-plugin-rest"
     compile "org.grails:grails-plugin-codecs"

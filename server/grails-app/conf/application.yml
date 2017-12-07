@@ -113,3 +113,7 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+okta:
+    oauth2:
+        issuer: https://dev-699989.oktapreview.com/oauth2/default
+        clientId: 0oad6dof6gwJkiXHs0h7
