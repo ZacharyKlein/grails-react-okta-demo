@@ -10,11 +10,10 @@ export default withAuth(class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {authenticated: false};
-    this.checkAuthentication = this.checkAuthentication.bind(this);
     this.checkAuthentication();
   }
 
-  async checkAuthentication() {
+  checkAuthentication = async () => {
     const isAuthenticated = await this.props.auth.isAuthenticated();
     const {authenticated} = this.state;
     if (isAuthenticated !== authenticated) {
