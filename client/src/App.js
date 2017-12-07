@@ -1,70 +1,46 @@
 import React, { Component } from 'react';
-import { Grid } from 'react-bootstrap';
-import AppNav from './AppNav';
-
-import grailsLogo from './images/grails-cupsonly-logo-white.svg';
-import reactLogo from './images/logo.svg';
-import { SERVER_URL, CLIENT_VERSION, REACT_VERSION } from './config';
+import logo from './images/logo.svg';
 import 'whatwg-fetch';
 
 class App extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      serverInfo: {},
-      clientInfo: {
-        version: CLIENT_VERSION,
-        react: REACT_VERSION
-      }
-    }
+      beers: [],
+      isLoading: false
+    };
   }
-
   componentDidMount() {
-    fetch(SERVER_URL + '/application')
-      .then(r => r.json())
-      .then(json => this.setState({serverInfo: json}))
-      .catch(error => console.error('Error connecting to server: ' + error));
+    this.setState({isLoading: true});
 
+    fetch('http://localhost:8080/good-beers')
+      .then(response => response.json())
+      .then(data => this.setState({beers: data, isLoading: false}));
   }
 
   render() {
-    const serverInfo = this.state.serverInfo;
-    const clientInfo = this.state.clientInfo;
+    const {beers, isLoading} = this.state;
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
 
     return (
-      <div>
-        <AppNav serverInfo={serverInfo} clientInfo={clientInfo}/>
-        <div className="grails-logo-container">
-          <img className="grails-logo" src={grailsLogo} alt="Grails" />
-          <span className="plus-logo">+</span>
-          <img className="hero-logo" src={reactLogo} alt="React" />
+      <div className="App">
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Welcome to React</h2>
         </div>
-
-        <Grid>
-          <div id="content">
-            <section className="row colset-2-its">
-              <h1 style={{textAlign: 'center'}}>Welcome to Grails</h1>
-              <br/>
-              <p>
-                Congratulations, you have successfully started your Grails & React application! While in development mode, changes will be loaded automatically when you edit your React app, without even refreshing the page.
-                Below is a list of controllers that are currently deployed in
-                this application, click on each to execute its default action:
-              </p>
-
-              <div id="controllers" role="navigation">
-                <h2>Available Controllers:</h2>
-                <ul>
-                  {serverInfo.controllers ? serverInfo.controllers.map(controller => {
-                    return <li key={controller.name}><a href={SERVER_URL + controller.logicalPropertyName}>{ controller.name }</a></li>;
-                  }) : null }
-                </ul>
-              </div>
-            </section>
-
-          </div>
-        </Grid>
+        <div>
+          <h2>Beer List</h2>
+          {beers.map((beer) =>
+            <div key={beer.id}>
+              {beer.name}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
