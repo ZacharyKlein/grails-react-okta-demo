@@ -1,36 +1,29 @@
-import React, { Component } from 'react';
-import logo from './images/logo.svg';
-import 'whatwg-fetch';
-import BeerList from "./BeerList";
+import * as React from 'react';
+import './css/App.css';
+import Home from './Home';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Security, ImplicitCallback } from '@okta/okta-react';
 
-class App extends Component {
+const config = {
+  issuer: 'https://dev-699989.oktapreview.com/oauth2/default',
+  redirectUri: window.location.origin + '/implicit/callback',
+  clientId: '0oad6dof6gwJkiXHs0h7'
+};
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      beers: [],
-      isLoading: false
-    };
-  }
-  componentDidMount() {
-    this.setState({isLoading: true});
-
-    fetch('http://localhost:8080/good-beers')
-      .then(response => response.json())
-      .then(data => this.setState({beers: data, isLoading: false}));
-  }
+class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <h2>Welcome to React</h2>
-        </div>
-        <BeerList/>
-        <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a></div>
-      </div>
+      <Router>
+        <Security
+          issuer={config.issuer}
+          client_id={config.clientId}
+          redirect_uri={config.redirectUri}
+        >
+          <Route path="/" exact={true} component={Home}/>
+          <Route path="/implicit/callback" component={ImplicitCallback}/>
+        </Security>
+      </Router>
     );
   }
 }

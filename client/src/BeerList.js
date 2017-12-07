@@ -1,5 +1,6 @@
 import * as React from 'react';
 import GiphyImage from "./GiphyImage";
+import {SERVER_URL} from "./config";
 
 class BeerList extends React.Component {
   constructor(props) {
@@ -7,23 +8,36 @@ class BeerList extends React.Component {
 
     this.state = {
       beers: [],
-      isLoading: false
+      isLoading: false,
+      error: ''
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({isLoading: true});
 
-    fetch('http://localhost:8080/good-beers')
-      .then(response => response.json())
-      .then(data => this.setState({beers: data, isLoading: false}));
+    try {
+      const response = await fetch(`${SERVER_URL}/good-beers`, {
+        headers: {
+          Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+        }
+      });
+      const data = await response.json();
+      this.setState({beers: data, isLoading: false});
+    } catch (err) {
+      this.setState({error: err});
+    }
   }
 
   render() {
-    const {beers, isLoading} = this.state;
+    const {beers, isLoading, error} = this.state;
 
     if (isLoading) {
-      return <p>Loading...</p>;
+      return <p>Loading ...</p>;
+    }
+
+    if (error.length > 0) {
+      return <p>Error: {error}</p>;
     }
 
     return (
