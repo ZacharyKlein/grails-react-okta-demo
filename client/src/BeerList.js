@@ -1,4 +1,5 @@
 import * as React from 'react';
+import GiphyImage from "./GiphyImage";
 
 class BeerList extends React.Component {
   constructor(props) {
@@ -30,7 +31,8 @@ class BeerList extends React.Component {
         <h2>Beer List</h2>
         {beers.map((beer) =>
           <div key={beer.id}>
-            {beer.name}
+            {beer.name}<br/>
+            <GiphyImage name={beer.name}/>
           </div>
         )}
       </div>
